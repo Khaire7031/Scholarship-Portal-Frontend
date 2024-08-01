@@ -14,7 +14,7 @@ export default function LoginForm() {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:8080/user/login', { email, password });
+            const response = await axios.post('http://localhost:3000/user/login', { email, password });
 
             // Handle successful response
             if (response.status === 200) {
