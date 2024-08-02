@@ -1,13 +1,13 @@
-import axios from "axios";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    // State to hold the authentication token
     const [token, setToken_] = useState(localStorage.getItem("token"));
+    const [user, setUser] = useState(null);
 
-    // Function to set the authentication token
     const setToken = (newToken) => {
         setToken_(newToken);
     };
@@ -16,22 +16,34 @@ const AuthProvider = ({ children }) => {
         if (token) {
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             localStorage.setItem('token', token);
+
+            // Decode the token to get user details
+            try {
+                const decoded = jwtDecode(token); // Using jwtDecode function
+                setUser({
+                    email: decoded.sub,
+                    role: decoded.role || 'USER' // Adjust according to your token structure
+                });
+            } catch (e) {
+                console.error('Failed to decode token:', e);
+                setUser(null);
+            }
         } else {
             delete axios.defaults.headers.common["Authorization"];
-            localStorage.removeItem('token')
+            localStorage.removeItem('token');
+            setUser(null);
         }
     }, [token]);
 
-    // Memoized value of the authentication context
     const contextValue = useMemo(
         () => ({
             token,
+            user,
             setToken,
         }),
-        [token]
+        [token, user]
     );
 
-    // Provide the authentication context to the children components
     return (
         <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
     );
