@@ -22,6 +22,7 @@ const DashBoard = () => {
             <Navbar />
 
             {/* Sidebar */}
+
             <aside id="logo-sidebar" className="fixed top-2 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
                     <ul className="space-y-2 font-medium">
@@ -60,13 +61,24 @@ const DashBoard = () => {
                                 <span className="flex-1 ms-3 whitespace-nowrap">Sign Out</span>
                             </a>
                         </li>
+                        <div className="mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                            <div className="flex items-center">
+                                <svg className="w-6 h-6 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 2a4 4 0 0 0-4 4 4 4 0 0 0 8 0 4 4 0 0 0-4-4zm0 6a6 6 0 0 0-6 6v1h12v-1a6 6 0 0 0-6-6z" />
+                                </svg>
+                                <div className="ms-3">
+                                    <p className="text-gray-900 dark:text-white">{user.email}</p>
+                                    <p className="text-gray-500 dark:text-gray-400 text-sm">{user.role}</p>
+                                </div>
+                            </div>
+                        </div>
                     </ul>
                 </div>
             </aside>
 
             {/* Dashboard Content */}
-            <div className="p-4 sm:ml-64">
-                <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <div className="p-2 pt-5 py-16 sm:ml-64">
+                <div className="p-2 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
                     {activeTab === 'dashboard' && <UserDashBoard></UserDashBoard>}
                     {activeTab === 'profile' && <div>Profile Page Content</div>}
                     {activeTab === 'reimbursement' && (
@@ -81,8 +93,12 @@ const DashBoard = () => {
                     {activeTab === 'sign-out' && <div>Sign Out Page Content</div>}
                 </div>
             </div>
+
+
         </>
     );
 };
 
 export default DashBoard;
+
+
