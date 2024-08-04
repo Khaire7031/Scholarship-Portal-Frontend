@@ -17,12 +17,16 @@ const AuthProvider = ({ children }) => {
             axios.defaults.headers.common["Authorization"] = "Bearer " + token;
             localStorage.setItem('token', token);
 
-            // Decode the token to get user details
+            // Decode the token to get the email and other details
             try {
-                const decoded = jwtDecode(token); // Using jwtDecode function
+                const decoded = jwtDecode(token);
+                console.log('Decoded token:', decoded);
+
+                // Here, we can set the user details from the backend
                 setUser({
-                    email: decoded.sub,
-                    role: decoded.role || 'USER' // Adjust according to your token structure
+                    id: localStorage.getItem('id'), // From backend response
+                    email: decoded.sub || 'No email provided', // From token
+                    role: localStorage.getItem('role') || 'USER' // From backend response
                 });
             } catch (e) {
                 console.error('Failed to decode token:', e);
@@ -31,6 +35,8 @@ const AuthProvider = ({ children }) => {
         } else {
             delete axios.defaults.headers.common["Authorization"];
             localStorage.removeItem('token');
+            localStorage.removeItem('id');
+            localStorage.removeItem('role');
             setUser(null);
         }
     }, [token]);

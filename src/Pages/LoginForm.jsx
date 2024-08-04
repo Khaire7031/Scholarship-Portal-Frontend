@@ -22,13 +22,14 @@ export default function LoginForm() {
             const response = await axios.post('http://localhost:3000/api/v1/auth/login', { email, password });
 
             if (response.status === 200) {
-
-
                 console.log("In Login : ", response.data);
-                const { token, role } = response.data;
+                const { token, refreshToken, id, role } = response.data;
 
                 setToken(token);
-                localStorage.setItem('role', role); // Store role in localStorage if needed
+                localStorage.setItem('token', token);
+                localStorage.setItem('refreshToken', refreshToken);
+                localStorage.setItem('id', id);
+                localStorage.setItem('role', role);
                 navigate("/dashboard", { replace: true });
             }
         } catch (err) {
